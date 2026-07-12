@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>OrçaZap — Entrar ou criar conta</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- CDN Oficial do Supabase -->
+<link rel="preconnect" href="https://googleapis.com">
+<link rel="preconnect" href="https://gstatic.com" crossorigin>
+<link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Biblioteca Estável do Supabase via Cloudflare CDN -->
 <script src="https://cloudflare.com"></script>
 <style>
   :root{
@@ -28,180 +28,84 @@
     --shadow-card: 0 10px 30px rgba(13,44,69,0.08);
     --shadow-btn: 0 8px 18px rgba(31,170,89,0.28);
   }
-
   *{ box-sizing: border-box; }
-
-  html, body{
-    margin:0;
-    padding:0;
-    background: var(--bg);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    color: var(--text);
-    -webkit-font-smoothing: antialiased;
-  }
-
-  body{
-    min-height: 100vh;
-    min-height: 100dvh;
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-  }
-
-  .page{
-    width:100%;
-    max-width: 440px;
-    min-height: 100vh;
-    min-height: 100dvh;
-    background: radial-gradient(120% 60% at 50% -10%, rgba(21,101,192,0.10), rgba(21,101,192,0) 60%), var(--bg);
-    display:flex;
-    flex-direction:column;
-    padding: 32px 20px 28px;
-  }
-
-  .brand{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
-    margin-bottom: 28px;
-  }
-
-  .brand-mark{
-    width:64px;
-    height:64px;
-    border-radius: 18px;
-    background: linear-gradient(155deg, var(--navy-700) 0%, var(--navy) 65%, #0A2036 100%);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    box-shadow: 0 10px 20px rgba(13,44,69,0.28);
-    margin-bottom: 14px;
-  }
-
+  html, body{ margin:0; padding:0; background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); -webkit-font-smoothing: antialiased; }
+  body{ min-height: 100vh; display:flex; justify-content:center; align-items:flex-start; }
+  .page{ width:100%; max-width: 440px; min-height: 100vh; background: radial-gradient(120% 60% at 50% -10%, rgba(21,101,192,0.10), rgba(21,101,192,0) 60%), var(--bg); display:flex; flex-direction:column; padding: 32px 20px 28px; }
+  .brand{ display:flex; flex-direction:column; align-items:center; text-align:center; margin-bottom: 28px; }
+  .brand-mark{ width:64px; height:64px; border-radius: 18px; background: linear-gradient(155deg, var(--navy-700) 0%, var(--navy) 65%, #0A2036 100%); display:flex; align-items:center; justify-content:center; box-shadow: 0 10px 20px rgba(13,44,69,0.28); margin-bottom: 14px; }
   .brand-mark svg{ width:32px; height:32px; }
-  .brand-name{ font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: var(--navy); margin: 0 0 4px; }
-  .brand-tag{ font-size: 14px; color: var(--text-muted); margin:0; font-weight: 500; max-width: 260px; }
-
-  .card{
-    background: var(--white);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-card);
-    border: 1px solid var(--border);
-    padding: 22px 20px 24px;
-    display:flex;
-    flex-direction:column;
-  }
-
+  .brand-name{ font-size: 22px; font-weight: 800; color: var(--navy); margin: 0 0 4px; }
+  .brand-tag{ font-size: 14px; color: var(--text-muted); margin:0; font-weight: 500; }
+  .card{ background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); border: 1px solid var(--border); padding: 22px 20px 24px; display:flex; flex-direction:column; }
   .switcher{ position:relative; display:flex; background: var(--blue-light); border-radius: 999px; padding: 4px; margin-bottom: 22px; }
-  .switcher-indicator{ position:absolute; top:4px; left:4px; width: calc(50% - 4px); height: calc(100% - 8px); background: var(--white); border-radius: 999px; box-shadow: 0 4px 10px rgba(13,44,69,0.14); transition: transform 0.28s cubic-bezier(.4,0,.2,1); }
-  .switcher[data-mode="cadastro"] .switcher-indicator{ transform: translateX(100%); }
-
-  .switcher button{ position:relative; z-index:1; flex:1; border:none; background:transparent; padding: 12px 8px; font-family:inherit; font-size: 15px; font-weight: 700; color: var(--text-muted); border-radius: 999px; cursor:pointer; transition: color 0.2s ease; }
+  .switcher-indicator{ position:absolute; top:4px; left:4px; width: calc(50% - 4px); height: calc(100% - 8px); background: var(--white); border-radius: 999px; box-shadow: 0 4px 10px rgba(13,44,69,0.14); transition: transform 0.28s ease; }
+  .switcher[data-mode="cadastro"] .switcher-indicator { transform: translateX(100%); }
+  .switcher button{ position:relative; z-index:1; flex:1; border:none; background:transparent; padding: 12px 8px; font-size: 15px; font-weight: 700; color: var(--text-muted); cursor:pointer; }
   .switcher button.is-active{ color: var(--navy); }
-  .switcher button:focus-visible{ outline: 2px solid var(--blue); outline-offset: 2px; }
-
   form{ display:flex; flex-direction:column; gap:16px; }
   .field{ display:flex; flex-direction:column; gap:7px; }
-  .field label{ font-size: 13px; font-weight: 700; color: var(--navy); letter-spacing: 0.01em; }
+  .field label{ font-size: 13px; font-weight: 700; color: var(--navy); }
   .input-wrap{ position:relative; display:flex; align-items:center; }
-  
-  .input-wrap svg{ position:absolute; left:16px; width:20px; height:20px; color: var(--text-muted); pointer-events:none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-  input, select{ width:100%; font-family:inherit; font-size:16px; font-weight:500; color: var(--text); background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 15px 16px 15px 46px; transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease; appearance:none; }
-  select{ padding-left:46px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748B' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: calc(100% - 16px) center; background-size: 16px; }
-  input::placeholder{ color: #9AA7B4; font-weight:500; }
-  input:focus, select:focus{ outline: none; border-color: var(--blue); background: var(--white); box-shadow: 0 0 0 4px rgba(21,101,192,0.14); }
-
+  .input-wrap svg{ position:absolute; left:16px; width:20px; height:20px; color: var(--text-muted); fill: none; stroke: currentColor; stroke-width: 2; }
+  input, select{ width:100%; font-size:16px; font-weight:500; color: var(--text); background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 15px 16px 15px 46px; outline: none; }
   .field-extra { display: none; flex-direction: column; gap: 16px; }
   .switcher[data-mode="cadastro"] ~ form .field-extra { display: flex; }
-
-  .helper-row{ display:flex; justify-content:flex-end; margin-top:-4px; }
-  .link-btn{ background:none; border:none; font-family:inherit; font-size:13px; font-weight:600; color: var(--blue); cursor:pointer; padding:4px 0; }
-
-  .btn-primary{ margin-top: 6px; width:100%; border:none; border-radius: var(--radius-md); padding: 17px 18px; font-family:inherit; font-size:16px; font-weight:700; color:#fff; background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%); box-shadow: var(--shadow-btn); cursor:pointer; transition: transform 0.12s ease, box-shadow 0.12s ease; }
-  .btn-primary:active{ transform: translateY(1px); box-shadow: 0 4px 10px rgba(31,170,89,0.28); }
-  .btn-primary:focus-visible{ outline: 2px solid var(--navy); outline-offset: 3px; }
-
+  .btn-primary{ margin-top: 6px; width:100%; border:none; border-radius: var(--radius-md); padding: 17px 18px; font-size:16px; font-weight:700; color:#fff; background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%); box-shadow: var(--shadow-btn); cursor:pointer; }
   .trust-badge{ margin-top:22px; display:flex; align-items:center; gap:10px; background: #EFFAF3; border: 1px solid #CFEEDA; border-radius: var(--radius-sm); padding: 12px 14px; }
-  .trust-badge svg{ width:20px; height:20px; flex-shrink:0; color: var(--green-dark); }
-  .trust-badge p{ margin:0; font-size:12.5px; font-weight:600; color: #146538; line-height:1.35; }
-  footer{ text-align:center; margin-top:20px; font-size:12px; color: var(--text-muted); font-weight:500; }
+  .trust-badge p{ margin:0; font-size:12.5px; font-weight:600; color: #146538; }
+  footer{ text-align:center; margin-top:20px; font-size:12px; color: var(--text-muted); }
 </style>
 </head>
 <body>
-
 <div class="page">
   <div class="brand">
     <div class="brand-mark">
-      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="4" y="10" width="24" height="14" rx="3" stroke="#7FB2E8" stroke-width="2"/>
-        <path d="M9 10v4M14 10v4M19 10v4M24 10v4" stroke="#7FB2E8" stroke-width="2" stroke-linecap="round"/>
-        <path d="M11 19.5l3 3 7-7" stroke="#3DDC84" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <svg viewBox="0 0 32 32" fill="none"><rect x="4" y="10" width="24" height="14" rx="3" stroke="#7FB2E8" stroke-width="2"/><path d="M9 10v4M14 10v4M19 10v4M24 10v4" stroke="#7FB2E8" stroke-width="2"/><path d="M11 19.5l3 3 7-7" stroke="#3DDC84" stroke-width="2.4"/></svg>
     </div>
     <h1 class="brand-name">OrçaZap</h1>
-    <p class="brand-tag">Orçamentos rápidos com envio direto para o WhatsApp do cliente.</p>
+    <p class="brand-tag">Orçamentos rápidos com envio direto para o WhatsApp.</p>
   </div>
-
   <div class="card">
     <div class="switcher" id="auth-switcher" data-mode="login">
       <div class="switcher-indicator"></div>
       <button type="button" id="tab-login" class="is-active">Entrar</button>
       <button type="button" id="tab-cadastro">Cadastrar</button>
     </div>
-
     <form id="auth-form">
-      <!-- Campo Extra: Nome do Negócio (Apenas Cadastro) -->
       <div class="field field-extra">
-        <label for="nome_negocio">Nome do seu Negócio / Seu Nome</label>
+        <label for="nome_negocio">Nome do seu Negócio</label>
         <div class="input-wrap">
-          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <input type="text" id="nome_negocio" placeholder="Ex: Marmoraria Silva ou João Eletricista">
+          <input type="text" id="nome_negocio" placeholder="Ex: Marmoraria Silva">
         </div>
       </div>
-
-      <!-- Campo Extra: Profissão (Apenas Cadastro) -->
       <div class="field field-extra">
         <label for="profissao">Sua Profissão</label>
         <div class="input-wrap">
-          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
           <select id="profissao">
-            <option value="">Selecione sua atividade...</option>
             <option value="Marmorista">Marmorista</option>
             <option value="Serralheiro">Serralheiro</option>
             <option value="Eletricista">Eletricista</option>
-            <option value="Encanador">Encanador</option>
-            <option value="Pedreiro">Pedreiro / Azulejista</option>
-            <option value="Outro">Outro Prestador de Serviço</option>
           </select>
         </div>
       </div>
-
-      <!-- E-mail (Ambos) -->
       <div class="field">
         <label for="email">E-mail</label>
         <div class="input-wrap">
-          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
         </div>
       </div>
-
-      <!-- Senha (Ambos) -->
       <div class="field">
         <label for="password">Senha</label>
         <div class="input-wrap">
-          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <input type="password" id="password" placeholder="Sua senha secreta" required minlength="6">
+          <input type="password" id="password" placeholder="Mínimo 6 dígitos" required minlength="6">
         </div>
       </div>
-
-      <div class="helper-row" id="forget-password-row">
-        <button type="button" class="link-btn">Esqueceu a senha?</button>
-      </div>
-
       <button type="submit" class="btn-primary" id="btn-submit">Entrar no Sistema</button>
     </form>
-
-    <div class="trust-badge">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+  </div>
+  <footer>OrçaZap &copy; 2026</footer>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
