@@ -95,4 +95,3 @@ authForm.addEventListener('submit', async (e) => {
         }
     }
 });
-
