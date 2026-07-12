@@ -1,10 +1,10 @@
-// ====== CONFIGURAÇÃO DO SUPABASE ======
+// ====== CONFIGURAÇÃO DO SUPABASE (Dados Oficiais - Corrigido!) ======
 const SUPABASE_URL = "https://supabase.co";
 const SUPABASE_KEY = "sb_publishable_bUCzdW_A7zsMW5Ubh3zEJw_1cZuJ5bG";
 
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ====== MAPEAMENTO DOS ELEMENTOS ======
+// ====== MAPEAMENTO DOS ELEMENTOS DA TELA ======
 const authSwitcher = document.getElementById('auth-switcher');
 const tabLogin = document.getElementById('tab-login');
 const tabCadastro = document.getElementById('tab-cadastro');
@@ -104,3 +104,5 @@ if (authForm) {
         }
     });
 }
+
+
