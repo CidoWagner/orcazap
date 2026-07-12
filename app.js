@@ -1,7 +1,8 @@
-const SUPABASE_URL = "https://supabase.co";
+const SUPABASE_URL = "https://tisoftuikvtgkngwrszh.supabase.co/rest/v1/";
 const SUPABASE_KEY = "sb_publishable_bUCzdW_A7zsMW5Ubh3zEJw_1cZuJ5bG";
 
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const { createClient } = supabase;
+const client = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const cadastroForm = document.getElementById('cadastro-form');
 const btnSubmit = document.getElementById('btn-submit');
