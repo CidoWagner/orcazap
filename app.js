@@ -1,3 +1,4 @@
+alert("O JavaScript do OrçaZap está funcionando!");
 const SUPABASE_URL = "https://supabase.co";
 const SUPABASE_KEY = "sb_publishable_bUCzdW_A7zsMW5Ubh3zEJw_1cZuJ5bG";
 
