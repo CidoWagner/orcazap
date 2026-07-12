@@ -1,5 +1,5 @@
-// ====== CONFIGURAÇÃO DO SUPABASE (Substitua com os seus dados) ======
-const SUPABASE_URL = "https://tisoftuikvtgkngwrszh.supabase.co;
+// ====== CONFIGURAÇÃO DO SUPABASE (Dados Oficiais do OrçaZap) ======
+const SUPABASE_URL = "https://supabase.co";
 const SUPABASE_KEY = "sb_publishable_bUCzdW_A7zsMW5Ubh3zEJw_1cZuJ5bG";
 
 // Inicializa o cliente do Supabase globalmente
@@ -15,7 +15,7 @@ const forgetPasswordRow = document.getElementById('forget-password-row');
 
 // Campos exclusivos de cadastro
 const nomeNegocioInput = document.getElementById('nome_negocio');
-const profissaoSelect = document.getElementById('profissao');
+const RiverFaltaProfissao = document.getElementById('profissao');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 
@@ -29,11 +29,11 @@ tabLogin.addEventListener('click', () => {
     tabLogin.classList.add('is-active');
     tabCadastro.classList.remove('is-active');
     btnSubmit.innerText = 'Entrar no Sistema';
-    forgetPasswordRow.style.display = 'flex';
+    if(forgetPasswordRow) forgetPasswordRow.style.display = 'flex';
     
     // Remove obrigatoriedade dos campos de cadastro para não travar o envio
     nomeNegocioInput.removeAttribute('required');
-    profissaoSelect.removeAttribute('required');
+    if(RiverFaltaProfissao) RiverFaltaProfissao.removeAttribute('required');
 });
 
 tabCadastro.addEventListener('click', () => {
@@ -42,11 +42,11 @@ tabCadastro.addEventListener('click', () => {
     tabCadastro.classList.add('is-active');
     tabLogin.classList.remove('is-active');
     btnSubmit.innerText = 'Criar Minha Conta';
-    forgetPasswordRow.style.display = 'none';
+    if(forgetPasswordRow) forgetPasswordRow.style.display = 'none';
     
     // Torna obrigatório no momento do cadastro
     nomeNegocioInput.setAttribute('required', '');
-    profissaoSelect.setAttribute('required', '');
+    if(RiverFaltaProfissao) RiverFaltaProfissao.setAttribute('required', '');
 });
 
 // ====== EVENTOS: PROCESSAMENTO DO FORMULÁRIO ======
@@ -66,20 +66,19 @@ authForm.addEventListener('submit', async (e) => {
         if (error) {
             alert('Erro ao entrar: ' + error.message);
         } else {
-            alert('Login efetuado com sucesso! Redirecionando...');
-            // Futuramente: window.location.href = 'calculadora.html';
+            alert('Login efetuado com sucesso! Abrindo a calculadora...');
+            window.location.href = 'calculadora.html';
         }
         
     } else {
         // --- Fluxo de Criação de Conta (Cadastro) ---
         const nomeNegocio = nomeNegocioInput.value;
-        const profissao = profissaoSelect.value;
+        const profissao = RiverFaltaProfissao ? RiverFaltaProfissao.value : 'Outro';
         
         const { data, error } = await supabase.auth.signUp({
             email: email,
             password: password,
             options: {
-                // Metadados salvos direto no usuário autenticado do Supabase
                 data: {
                     nome_negocio: nomeNegocio,
                     profissao: profissao
@@ -90,7 +89,10 @@ authForm.addEventListener('submit', async (e) => {
         if (error) {
             alert('Erro no cadastro: ' + error.message);
         } else {
-            alert('Conta criada com sucesso! Verifique seu e-mail para confirmar o cadastro.');
+            alert('Conta criada com sucesso! Você já pode fazer o login clicando na aba "Entrar".');
+            // Muda automaticamente para a tela de login para o usuário entrar
+            tabLogin.click();
         }
     }
 });
+
