@@ -1,10 +1,8 @@
-// ====== CONFIGURAÇÃO DO SUPABASE (Dados Oficiais - Corrigido!) ======
 const SUPABASE_URL = "https://supabase.co";
 const SUPABASE_KEY = "sb_publishable_bUCzdW_A7zsMW5Ubh3zEJw_1cZuJ5bG";
 
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ====== MAPEAMENTO DOS ELEMENTOS DA TELA ======
 const authSwitcher = document.getElementById('auth-switcher');
 const tabLogin = document.getElementById('tab-login');
 const tabCadastro = document.getElementById('tab-cadastro');
@@ -18,35 +16,30 @@ const profissaoSelect = document.getElementById('profissao');
 
 let modoAtual = 'login';
 
-// ====== LOGICA DE ALTERNANCIA DAS ABAS ======
-if (tabLogin && tabCadastro && authSwitcher) {
+if (tabLogin && tabCadastro && authSwitcher && authForm) {
     tabLogin.addEventListener('click', () => {
         modoAtual = 'login';
         authSwitcher.setAttribute('data-mode', 'login');
+        authForm.className = "mode-login"; // Altera a classe do form para esconder campos extras
         tabLogin.classList.add('is-active');
         tabCadastro.classList.remove('is-active');
         if (btnSubmit) btnSubmit.innerText = 'Entrar no Sistema';
-        
-        if (nomeNegocioInput) nomeNegocioInput.removeAttribute('required');
-        if (profissaoSelect) profissaoSelect.removeAttribute('required');
     });
 
     tabCadastro.addEventListener('click', () => {
         modoAtual = 'cadastro';
         authSwitcher.setAttribute('data-mode', 'cadastro');
+        authForm.className = "mode-cadastro"; // Altera a classe do form para exibir campos extras
         tabCadastro.classList.add('is-active');
         tabLogin.classList.remove('is-active');
         if (btnSubmit) btnSubmit.innerText = 'Criar Minha Conta';
-        
-        if (nomeNegocioInput) nomeNegocioInput.setAttribute('required', '');
-        if (profissaoSelect) profissaoSelect.setAttribute('required', '');
     });
 }
 
-// ====== LOGICA DO ENVIO DO FORMULARIO ======
 if (authForm) {
     authForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        console.log("Formulário enviado no modo: " + modoAtual);
         
         if (btnSubmit) {
             btnSubmit.innerText = 'Processando...';
@@ -59,7 +52,7 @@ if (authForm) {
         if (modoAtual === 'login') {
             const { data, error } = await supabase.auth.signInWithPassword({
                 email: email,
-                password: password,
+                password: password
             });
 
             if (error) {
@@ -94,7 +87,7 @@ if (authForm) {
                     btnSubmit.disabled = false;
                 }
             } else {
-                alert('Conta criada com sucesso! Você já pode fazer o login clicando na aba "Entrar".');
+                alert('Conta criada com sucesso! Entre na aba "Entrar" para acessar o sistema.');
                 if (btnSubmit) {
                     btnSubmit.innerText = 'Criar Minha Conta';
                     btnSubmit.disabled = false;
