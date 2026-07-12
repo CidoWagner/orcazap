@@ -3,18 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>OrçaZap — Entrar ou criar conta</title>
+<title>OrçaZap — Criar Conta Grátis</title>
 <link rel="preconnect" href="https://googleapis.com">
 <link rel="preconnect" href="https://gstatic.com" crossorigin>
 <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- Biblioteca Estável do Supabase via Cloudflare CDN -->
+<!-- Biblioteca Estável do Supabase -->
 <script src="https://cloudflare.com"></script>
 <style>
   :root{
     --navy: #0D2C45;
     --navy-700: #123A5C;
     --blue: #1565C0;
-    --blue-light: #E8F1FB;
     --bg: #F4F7FA;
     --white: #FFFFFF;
     --green: #1FAA59;
@@ -24,36 +23,22 @@
     --border: #DFE6EC;
     --radius-lg: 18px;
     --radius-md: 14px;
-    --radius-sm: 10px;
     --shadow-card: 0 10px 30px rgba(13,44,69,0.08);
     --shadow-btn: 0 8px 18px rgba(31,170,89,0.28);
   }
   *{ box-sizing: border-box; }
-  html, body{ margin:0; padding:0; background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); -webkit-font-smoothing: antialiased; }
-  body{ min-height: 100vh; display:flex; justify-content:center; align-items:flex-start; }
-  .page{ width:100%; max-width: 440px; min-height: 100vh; background: radial-gradient(120% 60% at 50% -10%, rgba(21,101,192,0.10), rgba(21,101,192,0) 60%), var(--bg); display:flex; flex-direction:column; padding: 32px 20px 28px; }
-  .brand{ display:flex; flex-direction:column; align-items:center; text-align:center; margin-bottom: 28px; }
+  body{ margin:0; background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); display:flex; justify-content:center; }
+  .page{ width:100%; max-width: 440px; min-height: 100vh; display:flex; flex-direction:column; padding: 32px 20px; }
+  .brand{ display:flex; flex-direction:column; align-items:center; text-align:center; margin-bottom: 24px; }
   .brand-mark{ width:64px; height:64px; border-radius: 18px; background: linear-gradient(155deg, var(--navy-700) 0%, var(--navy) 65%, #0A2036 100%); display:flex; align-items:center; justify-content:center; box-shadow: 0 10px 20px rgba(13,44,69,0.28); margin-bottom: 14px; }
   .brand-mark svg{ width:32px; height:32px; }
   .brand-name{ font-size: 22px; font-weight: 800; color: var(--navy); margin: 0 0 4px; }
-  .brand-tag{ font-size: 14px; color: var(--text-muted); margin:0; font-weight: 500; }
-  
-  .card{ background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); border: 1px solid var(--border); padding: 22px 20px 24px; display:flex; flex-direction:column; }
-  .switcher{ position:relative; display:flex; background: var(--blue-light); border-radius: 999px; padding: 4px; margin-bottom: 22px; }
-  .switcher-indicator{ position:absolute; top:4px; left:4px; width: calc(50% - 4px); height: calc(100% - 8px); background: var(--white); border-radius: 999px; box-shadow: 0 4px 10px rgba(13,44,69,0.14); transition: transform 0.28s ease; }
-  .switcher[data-mode="cadastro"] .switcher-indicator { transform: translateX(100%); }
-  .switcher button{ position:relative; z-index:1; flex:1; border:none; background:transparent; padding: 12px 8px; font-size: 15px; font-weight: 700; color: var(--text-muted); cursor:pointer; font-family: inherit; }
-  .switcher button.is-active{ color: var(--navy); }
-  
+  .brand-tag{ font-size: 14px; color: var(--text-muted); margin:0; }
+  .card{ background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); border: 1px solid var(--border); padding: 22px 20px; display:flex; flex-direction:column; }
   form{ display:flex; flex-direction:column; gap:16px; }
   .field{ display:flex; flex-direction:column; gap:7px; }
   .field label{ font-size: 13px; font-weight: 700; color: var(--navy); }
   input, select{ width:100%; font-size:16px; font-weight:500; color: var(--text); background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 15px 16px; outline: none; }
-  
-  /* Controle simples de exibição dos campos extras via CSS */
-  .field-extra { display: none; }
-  .mode-cadastro .field-extra { display: flex; }
-  
   .btn-primary{ margin-top: 6px; width:100%; border:none; border-radius: var(--radius-md); padding: 17px 18px; font-size:16px; font-weight:700; color:#fff; background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%); box-shadow: var(--shadow-btn); cursor:pointer; }
   footer{ text-align:center; margin-top:20px; font-size:12px; color: var(--text-muted); }
 </style>
@@ -65,38 +50,33 @@
       <svg viewBox="0 0 32 32" fill="none"><rect x="4" y="10" width="24" height="14" rx="3" stroke="#7FB2E8" stroke-width="2"/><path d="M9 10v4M14 10v4M19 10v4M24 10v4" stroke="#7FB2E8" stroke-width="2"/><path d="M11 19.5l3 3 7-7" stroke="#3DDC84" stroke-width="2.4"/></svg>
     </div>
     <h1 class="brand-name">OrçaZap</h1>
-    <p class="brand-tag">Orçamentos rápidos direto para o WhatsApp.</p>
+    <p class="brand-tag">Cadastre-se grátis para criar orçamentos no celular.</p>
   </div>
   
   <div class="card">
-    <div class="switcher" id="auth-switcher" data-mode="login">
-      <div class="switcher-indicator"></div>
-      <button type="button" id="tab-login" class="is-active">Entrar</button>
-      <button type="button" id="tab-cadastro">Cadastrar</button>
-    </div>
-    
-    <form id="auth-form" class="mode-login">
-      <div class="field field-extra" id="div-nome-negocio">
+    <form id="cadastro-form">
+      <div class="field">
         <label for="nome_negocio">Nome do seu Negócio</label>
-        <input type="text" id="nome_negocio" placeholder="Ex: Marmoraria Silva">
+        <input type="text" id="nome_negocio" placeholder="Ex: Marmoraria Silva" required>
       </div>
-      <div class="field field-extra" id="div-profissao">
+      <div class="field">
         <label for="profissao">Sua Profissão</label>
-        <select id="profissao">
+        <select id="profissao" required>
           <option value="Marmorista">Marmorista</option>
           <option value="Serralheiro">Serralheiro</option>
           <option value="Eletricista">Eletricista</option>
+          <option value="Pedreiro">Pedreiro / Azulejista</option>
         </select>
       </div>
       <div class="field">
-        <label for="email">E-mail</label>
+        <label for="email">Seu E-mail</label>
         <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
       </div>
       <div class="field">
-        <label for="password">Senha</label>
-        <input type="password" id="password" placeholder="Mínimo 6 dígitos" required minlength="6">
+        <label for="password">Crie uma Senha (mínimo 6 dígitos)</label>
+        <input type="password" id="password" placeholder="Digite sua senha" required minlength="6">
       </div>
-      <button type="submit" class="btn-primary" id="btn-submit">Entrar no Sistema</button>
+      <button type="submit" class="btn-primary" id="btn-submit">Criar Minha Conta Grátis</button>
     </form>
   </div>
   <footer>OrçaZap &copy; 2026</footer>
