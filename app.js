@@ -1,28 +1,81 @@
-const SUPABASE_URL = "https://tisoftuikvtgkngwrszh.supabase.co/rest/v1/";
+// ====== CONFIGURAÇÃO DO SUPABASE ======
+const SUPABASE_URL = "https://tisoftuikvtgkngwrszh.supabase.co";
 const SUPABASE_KEY = "sb_publishable_bUCzdW_A7zsMW5Ubh3zEJw_1cZuJ5bG";
 
-const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Inicializa o cliente do Supabase globalmente com um nome diferente para evitar conflito
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const cadastroForm = document.getElementById('cadastro-form');
+// ====== MAPEAMENTO DOS ELEMENTOS DA TELA (DOM) ======
+const authSwitcher = document.getElementById('auth-switcher');
+const tabLogin = document.getElementById('tab-login');
+const tabCadastro = document.getElementById('tab-cadastro');
+const authForm = document.getElementById('auth-form');
 const btnSubmit = document.getElementById('btn-submit');
+const forgetPasswordRow = document.getElementById('forget-password-row');
 
-if (cadastroForm) {
-    cadastroForm.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Impede a página de recarregar
-        console.log("Tentando cadastrar usuário...");
+// Campos exclusivos de cadastro
+const nomeNegocioInput = document.getElementById('nome_negocio');
+const profissaoSelect = document.getElementById('profissao');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+
+// Estado inicial do fluxo ('login' ou 'cadastro')
+let modoAtual = 'login';
+
+// ====== EVENTOS: ALTERNÂNCIA DE ABAS ======
+tabLogin.addEventListener('click', () => {
+    modoAtual = 'login';
+    authSwitcher.setAttribute('data-mode', 'login');
+    tabLogin.classList.add('is-active');
+    tabCadastro.classList.remove('is-active');
+    btnSubmit.innerText = 'Entrar no Sistema';
+    forgetPasswordRow.style.display = 'flex';
+    
+    // Remove obrigatoriedade dos campos de cadastro para não travar o envio
+    nomeNegocioInput.removeAttribute('required');
+    profissaoSelect.removeAttribute('required');
+});
+
+tabCadastro.addEventListener('click', () => {
+    modoAtual = 'cadastro';
+    authSwitcher.setAttribute('data-mode', 'cadastro');
+    tabCadastro.classList.add('is-active');
+    tabLogin.classList.remove('is-active');
+    btnSubmit.innerText = 'Criar Minha Conta';
+    forgetPasswordRow.style.display = 'none';
+    
+    // Torna obrigatório no momento do cadastro
+    nomeNegocioInput.setAttribute('required', '');
+    profissaoSelect.setAttribute('required', '');
+});
+
+// ====== EVENTOS: PROCESSAMENTO DO FORMULÁRIO ======
+authForm.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Impede a página de recarregar
+    
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    
+    if (modoAtual === 'login') {
+        // --- Fluxo de Autenticação (Login) ---
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
         
-        if (btnSubmit) {
-            btnSubmit.innerText = 'Processando...';
-            btnSubmit.disabled = true;
+        if (error) {
+            alert('Erro ao entrar: ' + error.message);
+        } else {
+            alert('Login efetuado com sucesso! Redirecionando...');
+            // Futuramente: window.location.href = 'calculadora.html';
         }
-
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-        const nomeNegocio = document.getElementById('nome_negocio').value.trim();
-        const profissao = document.getElementById('profissao').value;
-
-        // Dispara os dados direto para o Supabase Authentication
-        const { data, error } = await supabase.auth.signUp({
+        
+    } else {
+        // --- Fluxo de Criação de Conta (Cadastro) ---
+        const nomeNegocio = nomeNegocioInput.value;
+        const profissao = profissaoSelect.value;
+        
+        const { data, error } = await supabaseClient.auth.signUp({
             email: email,
             password: password,
             options: {
@@ -32,19 +85,12 @@ if (cadastroForm) {
                 }
             }
         });
-
+        
         if (error) {
-            alert('Erro no Supabase: ' + error.message);
-            if (btnSubmit) {
-                btnSubmit.innerText = 'Criar Minha Conta Grátis';
-                btnSubmit.disabled = false;
-            }
+            alert('Erro no cadastro: ' + error.message);
         } else {
-            alert('CONTA CRIADA COM SUCESSO! Abrindo a calculadora...');
-            // Redireciona direto para a calculadora automática do marmorista
-            window.location.href = 'calculadora.html';
+            alert('Conta criada com sucesso! Verifique seu e-mail para confirmar o cadastro.');
         }
-    });
-}
-
+    }
+});
 
