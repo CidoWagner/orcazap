@@ -38,22 +38,25 @@
   .brand-name{ font-size: 22px; font-weight: 800; color: var(--navy); margin: 0 0 4px; }
   .brand-tag{ font-size: 14px; color: var(--text-muted); margin:0; font-weight: 500; }
   .card{ background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); border: 1px solid var(--border); padding: 22px 20px 24px; display:flex; flex-direction:column; }
+  
+  /* O Switcher agora fica fora do form para não bugar o clique */
   .switcher{ position:relative; display:flex; background: var(--blue-light); border-radius: 999px; padding: 4px; margin-bottom: 22px; }
   .switcher-indicator{ position:absolute; top:4px; left:4px; width: calc(50% - 4px); height: calc(100% - 8px); background: var(--white); border-radius: 999px; box-shadow: 0 4px 10px rgba(13,44,69,0.14); transition: transform 0.28s ease; }
   .switcher[data-mode="cadastro"] .switcher-indicator { transform: translateX(100%); }
-  .switcher button{ position:relative; z-index:1; flex:1; border:none; background:transparent; padding: 12px 8px; font-size: 15px; font-weight: 700; color: var(--text-muted); cursor:pointer; }
+  .switcher button{ position:relative; z-index:1; flex:1; border:none; background:transparent; padding: 12px 8px; font-size: 15px; font-weight: 700; color: var(--text-muted); cursor:pointer; font-family: inherit; }
   .switcher button.is-active{ color: var(--navy); }
+  
   form{ display:flex; flex-direction:column; gap:16px; }
   .field{ display:flex; flex-direction:column; gap:7px; }
   .field label{ font-size: 13px; font-weight: 700; color: var(--navy); }
   .input-wrap{ position:relative; display:flex; align-items:center; }
-  .input-wrap svg{ position:absolute; left:16px; width:20px; height:20px; color: var(--text-muted); fill: none; stroke: currentColor; stroke-width: 2; }
-  input, select{ width:100%; font-size:16px; font-weight:500; color: var(--text); background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 15px 16px 15px 46px; outline: none; }
-  .field-extra { display: none; flex-direction: column; gap: 16px; }
-  .switcher[data-mode="cadastro"] ~ form .field-extra { display: flex; }
+  input, select{ width:100%; font-size:16px; font-weight:500; color: var(--text); background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 15px 16px 15px 16px; outline: none; }
+  
+  /* Controle de exibição dos campos extras */
+  .field-extra { display: none; }
+  .mode-cadastro .field-extra { display: flex; }
+  
   .btn-primary{ margin-top: 6px; width:100%; border:none; border-radius: var(--radius-md); padding: 17px 18px; font-size:16px; font-weight:700; color:#fff; background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%); box-shadow: var(--shadow-btn); cursor:pointer; }
-  .trust-badge{ margin-top:22px; display:flex; align-items:center; gap:10px; background: #EFFAF3; border: 1px solid #CFEEDA; border-radius: var(--radius-sm); padding: 12px 14px; }
-  .trust-badge p{ margin:0; font-size:12.5px; font-weight:600; color: #146538; }
   footer{ text-align:center; margin-top:20px; font-size:12px; color: var(--text-muted); }
 </style>
 </head>
@@ -64,15 +67,19 @@
       <svg viewBox="0 0 32 32" fill="none"><rect x="4" y="10" width="24" height="14" rx="3" stroke="#7FB2E8" stroke-width="2"/><path d="M9 10v4M14 10v4M19 10v4M24 10v4" stroke="#7FB2E8" stroke-width="2"/><path d="M11 19.5l3 3 7-7" stroke="#3DDC84" stroke-width="2.4"/></svg>
     </div>
     <h1 class="brand-name">OrçaZap</h1>
-    <p class="brand-tag">Orçamentos rápidos com envio direto para o WhatsApp.</p>
+    <p class="brand-tag">Orçamentos rápidos direto para o WhatsApp.</p>
   </div>
+  
   <div class="card">
+    <!-- Abas fora do formulário -->
     <div class="switcher" id="auth-switcher" data-mode="login">
       <div class="switcher-indicator"></div>
       <button type="button" id="tab-login" class="is-active">Entrar</button>
       <button type="button" id="tab-cadastro">Cadastrar</button>
     </div>
-    <form id="auth-form">
+    
+    <!-- Formulário limpo iniciando em modo login -->
+    <form id="auth-form" class="mode-login">
       <div class="field field-extra">
         <label for="nome_negocio">Nome do seu Negócio</label>
         <div class="input-wrap">
