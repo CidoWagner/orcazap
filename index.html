@@ -37,9 +37,8 @@
   .brand-mark svg{ width:32px; height:32px; }
   .brand-name{ font-size: 22px; font-weight: 800; color: var(--navy); margin: 0 0 4px; }
   .brand-tag{ font-size: 14px; color: var(--text-muted); margin:0; font-weight: 500; }
-  .card{ background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); border: 1px solid var(--border); padding: 22px 20px 24px; display:flex; flex-direction:column; }
   
-  /* O Switcher agora fica fora do form para não bugar o clique */
+  .card{ background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); border: 1px solid var(--border); padding: 22px 20px 24px; display:flex; flex-direction:column; }
   .switcher{ position:relative; display:flex; background: var(--blue-light); border-radius: 999px; padding: 4px; margin-bottom: 22px; }
   .switcher-indicator{ position:absolute; top:4px; left:4px; width: calc(50% - 4px); height: calc(100% - 8px); background: var(--white); border-radius: 999px; box-shadow: 0 4px 10px rgba(13,44,69,0.14); transition: transform 0.28s ease; }
   .switcher[data-mode="cadastro"] .switcher-indicator { transform: translateX(100%); }
@@ -49,10 +48,9 @@
   form{ display:flex; flex-direction:column; gap:16px; }
   .field{ display:flex; flex-direction:column; gap:7px; }
   .field label{ font-size: 13px; font-weight: 700; color: var(--navy); }
-  .input-wrap{ position:relative; display:flex; align-items:center; }
-  input, select{ width:100%; font-size:16px; font-weight:500; color: var(--text); background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 15px 16px 15px 16px; outline: none; }
+  input, select{ width:100%; font-size:16px; font-weight:500; color: var(--text); background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 15px 16px; outline: none; }
   
-  /* Controle de exibição dos campos extras */
+  /* Controle simples de exibição dos campos extras via CSS */
   .field-extra { display: none; }
   .mode-cadastro .field-extra { display: flex; }
   
@@ -71,42 +69,32 @@
   </div>
   
   <div class="card">
-    <!-- Abas fora do formulário -->
     <div class="switcher" id="auth-switcher" data-mode="login">
       <div class="switcher-indicator"></div>
       <button type="button" id="tab-login" class="is-active">Entrar</button>
       <button type="button" id="tab-cadastro">Cadastrar</button>
     </div>
     
-    <!-- Formulário limpo iniciando em modo login -->
     <form id="auth-form" class="mode-login">
-      <div class="field field-extra">
+      <div class="field field-extra" id="div-nome-negocio">
         <label for="nome_negocio">Nome do seu Negócio</label>
-        <div class="input-wrap">
-          <input type="text" id="nome_negocio" placeholder="Ex: Marmoraria Silva">
-        </div>
+        <input type="text" id="nome_negocio" placeholder="Ex: Marmoraria Silva">
       </div>
-      <div class="field field-extra">
+      <div class="field field-extra" id="div-profissao">
         <label for="profissao">Sua Profissão</label>
-        <div class="input-wrap">
-          <select id="profissao">
-            <option value="Marmorista">Marmorista</option>
-            <option value="Serralheiro">Serralheiro</option>
-            <option value="Eletricista">Eletricista</option>
-          </select>
-        </div>
+        <select id="profissao">
+          <option value="Marmorista">Marmorista</option>
+          <option value="Serralheiro">Serralheiro</option>
+          <option value="Eletricista">Eletricista</option>
+        </select>
       </div>
       <div class="field">
         <label for="email">E-mail</label>
-        <div class="input-wrap">
-          <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
-        </div>
+        <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
       </div>
       <div class="field">
         <label for="password">Senha</label>
-        <div class="input-wrap">
-          <input type="password" id="password" placeholder="Mínimo 6 dígitos" required minlength="6">
-        </div>
+        <input type="password" id="password" placeholder="Mínimo 6 dígitos" required minlength="6">
       </div>
       <button type="submit" class="btn-primary" id="btn-submit">Entrar no Sistema</button>
     </form>
