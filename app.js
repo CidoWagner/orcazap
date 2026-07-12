@@ -1,4 +1,3 @@
-alert("O JavaScript do OrçaZap está funcionando!");
 const SUPABASE_URL = "https://supabase.co";
 const SUPABASE_KEY = "sb_publishable_bUCzdW_A7zsMW5Ubh3zEJw_1cZuJ5bG";
 
@@ -13,7 +12,7 @@ const btnSubmit = document.getElementById('btn-submit');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const nomeNegocioInput = document.getElementById('nome_negocio');
-const profissaoSelect = document.getElementById('profissao');
+const RiverFaltaProfissao = document.getElementById('profissao');
 
 let modoAtual = 'login';
 
@@ -21,26 +20,31 @@ if (tabLogin && tabCadastro && authSwitcher && authForm) {
     tabLogin.addEventListener('click', () => {
         modoAtual = 'login';
         authSwitcher.setAttribute('data-mode', 'login');
-        authForm.className = "mode-login"; // Altera a classe do form para esconder campos extras
+        authForm.className = "mode-login";
         tabLogin.classList.add('is-active');
         tabCadastro.classList.remove('is-active');
         if (btnSubmit) btnSubmit.innerText = 'Entrar no Sistema';
+        
+        // Remove obrigatoriedade no login para o navegador não travar o envio
+        if(nomeNegocioInput) nomeNegocioInput.removeAttribute('required');
     });
 
     tabCadastro.addEventListener('click', () => {
         modoAtual = 'cadastro';
         authSwitcher.setAttribute('data-mode', 'cadastro');
-        authForm.className = "mode-cadastro"; // Altera a classe do form para exibir campos extras
+        authForm.className = "mode-cadastro";
         tabCadastro.classList.add('is-active');
         tabLogin.classList.remove('is-active');
         if (btnSubmit) btnSubmit.innerText = 'Criar Minha Conta';
+        
+        // Torna obrigatório apenas ao cadastrar
+        if(nomeNegocioInput) nomeNegocioInput.setAttribute('required', '');
     });
 }
 
 if (authForm) {
     authForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        console.log("Formulário enviado no modo: " + modoAtual);
         
         if (btnSubmit) {
             btnSubmit.innerText = 'Processando...';
@@ -68,7 +72,7 @@ if (authForm) {
             }
         } else {
             const nomeNegocio = nomeNegocioInput ? nomeNegocioInput.value.trim() : '';
-            const profissao = profissaoSelect ? profissaoSelect.value : 'Outro';
+            const profissao = RiverFaltaProfissao ? RiverFaltaProfissao.value : 'Outro';
 
             const { data, error } = await supabase.auth.signUp({
                 email: email,
@@ -88,7 +92,7 @@ if (authForm) {
                     btnSubmit.disabled = false;
                 }
             } else {
-                alert('Conta criada com sucesso! Entre na aba "Entrar" para acessar o sistema.');
+                alert('Conta criada com sucesso! Você já pode fazer o login clicando na aba "Entrar".');
                 if (btnSubmit) {
                     btnSubmit.innerText = 'Criar Minha Conta';
                     btnSubmit.disabled = false;
