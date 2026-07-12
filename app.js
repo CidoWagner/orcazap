@@ -1,5 +1,5 @@
 // ====== CONFIGURAÇÃO DO SUPABASE (Substitua com os seus dados) ======
-const SUPABASE_URL = "https://tisoftuikvtgkngwrszh.supabase.co/rest/v1/";
+const SUPABASE_URL = "https://tisoftuikvtgkngwrszh.supabase.co;
 const SUPABASE_KEY = "sb_publishable_bUCzdW_A7zsMW5Ubh3zEJw_1cZuJ5bG";
 
 // Inicializa o cliente do Supabase globalmente
