@@ -3,102 +3,46 @@ const SUPABASE_KEY = "sb_publishable_bUCzdW_A7zsMW5Ubh3zEJw_1cZuJ5bG";
 
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const authSwitcher = document.getElementById('auth-switcher');
-const tabLogin = document.getElementById('tab-login');
-const tabCadastro = document.getElementById('tab-cadastro');
-const authForm = document.getElementById('auth-form');
+const cadastroForm = document.getElementById('cadastro-form');
 const btnSubmit = document.getElementById('btn-submit');
 
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
-const nomeNegocioInput = document.getElementById('nome_negocio');
-const RiverFaltaProfissao = document.getElementById('profissao');
-
-let modoAtual = 'login';
-
-if (tabLogin && tabCadastro && authSwitcher && authForm) {
-    tabLogin.addEventListener('click', () => {
-        modoAtual = 'login';
-        authSwitcher.setAttribute('data-mode', 'login');
-        authForm.className = "mode-login";
-        tabLogin.classList.add('is-active');
-        tabCadastro.classList.remove('is-active');
-        if (btnSubmit) btnSubmit.innerText = 'Entrar no Sistema';
-        
-        // Remove obrigatoriedade no login para o navegador não travar o envio
-        if(nomeNegocioInput) nomeNegocioInput.removeAttribute('required');
-    });
-
-    tabCadastro.addEventListener('click', () => {
-        modoAtual = 'cadastro';
-        authSwitcher.setAttribute('data-mode', 'cadastro');
-        authForm.className = "mode-cadastro";
-        tabCadastro.classList.add('is-active');
-        tabLogin.classList.remove('is-active');
-        if (btnSubmit) btnSubmit.innerText = 'Criar Minha Conta';
-        
-        // Torna obrigatório apenas ao cadastrar
-        if(nomeNegocioInput) nomeNegocioInput.setAttribute('required', '');
-    });
-}
-
-if (authForm) {
-    authForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+if (cadastroForm) {
+    cadastroForm.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Impede a página de recarregar
+        console.log("Tentando cadastrar usuário...");
         
         if (btnSubmit) {
             btnSubmit.innerText = 'Processando...';
             btnSubmit.disabled = true;
         }
 
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const nomeNegocio = document.getElementById('nome_negocio').value.trim();
+        const profissao = document.getElementById('profissao').value;
 
-        if (modoAtual === 'login') {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
-
-            if (error) {
-                alert('Erro ao entrar: ' + error.message);
-                if (btnSubmit) {
-                    btnSubmit.innerText = 'Entrar no Sistema';
-                    btnSubmit.disabled = false;
+        // Dispara os dados direto para o Supabase Authentication
+        const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: {
+                    nome_negocio: nomeNegocio,
+                    profissao: profissao
                 }
-            } else {
-                alert('Login efetuado com sucesso! Abrindo calculadora...');
-                window.location.href = 'calculadora.html';
+            }
+        });
+
+        if (error) {
+            alert('Erro no Supabase: ' + error.message);
+            if (btnSubmit) {
+                btnSubmit.innerText = 'Criar Minha Conta Grátis';
+                btnSubmit.disabled = false;
             }
         } else {
-            const nomeNegocio = nomeNegocioInput ? nomeNegocioInput.value.trim() : '';
-            const profissao = RiverFaltaProfissao ? RiverFaltaProfissao.value : 'Outro';
-
-            const { data, error } = await supabase.auth.signUp({
-                email: email,
-                password: password,
-                options: {
-                    data: {
-                        nome_negocio: nomeNegocio,
-                        profissao: profissao
-                    }
-                }
-            });
-
-            if (error) {
-                alert('Erro no cadastro: ' + error.message);
-                if (btnSubmit) {
-                    btnSubmit.innerText = 'Criar Minha Conta';
-                    btnSubmit.disabled = false;
-                }
-            } else {
-                alert('Conta criada com sucesso! Você já pode fazer o login clicando na aba "Entrar".');
-                if (btnSubmit) {
-                    btnSubmit.innerText = 'Criar Minha Conta';
-                    btnSubmit.disabled = false;
-                }
-                if (tabLogin) tabLogin.click();
-            }
+            alert('CONTA CRIADA COM SUCESSO! Abrindo a calculadora...');
+            // Redireciona direto para a calculadora automática do marmorista
+            window.location.href = 'calculadora.html';
         }
     });
 }
