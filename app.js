@@ -67,7 +67,7 @@ authForm.addEventListener('submit', async (e) => {
             alert('Erro ao entrar: ' + error.message);
         } else {
             alert('Login efetuado com sucesso! Redirecionando...');
-            // Futuramente: window.location.href = 'calculadora.html';
+            window.location.href = "calculadora.html";
         }
         
     } else {
