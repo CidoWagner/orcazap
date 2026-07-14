@@ -36,7 +36,7 @@ if (cadastroForm) {
             }
         } else {
             alert('CONTA CRIADA COM SUCESSO! Abrindo a calculadora...');
-            window.location.href = 'calculadora.html';
+            window.location.href = "https://github.io";
         }
     });
 }
