@@ -3,64 +3,118 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>OrçaZap — Criar Conta Grátis</title>
-<link href="https://googleapis.com" rel="stylesheet">
-<script src="https://unpkg.com"></script>
+<title>OrçaZap — Calculadora de Orçamento</title>
+<link rel="preconnect" href="https://googleapis.com">
+<link rel="preconnect" href="https://gstatic.com" crossorigin>
+<link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Biblioteca Estável do Supabase -->
+<script src="https://cloudflare.com"></script>
 <style>
-  :root{ --navy: #0D2C45; --navy-700: #123A5C; --blue: #1565C0; --bg: #F4F7FA; --white: #FFFFFF; --green: #1FAA59; --green-dark: #178A48; --text: #16232E; --text-muted: #64748B; --border: #DFE6EC; --radius-lg: 18px; --radius-md: 14px; --shadow-card: 0 10px 30px rgba(13,44,69,0.08); --shadow-btn: 0 8px 18px rgba(31,170,89,0.28); }
+  :root { 
+    --navy: #0D2C45; 
+    --blue: #1565C0; 
+    --bg: #F4F7FA; 
+    --white: #FFFFFF; 
+    --green: #1FAA59; 
+    --green-dark: #178A48; 
+    --text: #16232E; 
+    --text-muted: #64748B; 
+    --border: #DFE6EC; 
+    --radius-lg: 18px; 
+    --radius-md: 14px; 
+    --shadow-card: 0 10px 30px rgba(13,44,69,0.08); 
+    --shadow-btn: 0 8px 18px rgba(31,170,89,0.28); 
+  }
   *{ box-sizing: border-box; }
-  body{ margin:0; background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); display:flex; justify-content:center; }
-  .page{ width:100%; max-width: 440px; min-height: 100vh; display:flex; flex-direction:column; padding: 32px 20px; }
-  .brand{ display:flex; flex-direction:column; align-items:center; text-align:center; margin-bottom: 24px; }
-  .brand-mark{ width:64px; height:64px; border-radius: 18px; background: linear-gradient(155deg, var(--navy-700) 0%, var(--navy) 65%, #0A2036 100%); display:flex; align-items:center; justify-content:center; box-shadow: 0 10px 20px rgba(13,44,69,0.28); margin-bottom: 14px; }
-  .brand-mark svg{ width:32px; height:32px; }
-  .brand-name{ font-size: 22px; font-weight: 800; color: var(--navy); margin: 0 0 4px; }
-  .brand-tag{ font-size: 14px; color: var(--text-muted); margin:0; }
-  .card{ background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); border: 1px solid var(--border); padding: 22px 20px; display:flex; flex-direction:column; }
-  form{ display:flex; flex-direction:column; gap:16px; }
-  .field{ display:flex; flex-direction:column; gap:7px; }
-  .field label{ font-size: 13px; font-weight: 700; color: var(--navy); }
-  input, select{ width:100%; font-size:16px; font-weight:500; color: var(--text); background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 15px 16px; outline: none; }
-  .btn-primary{ margin-top: 6px; width:100%; border:none; border-radius: var(--radius-md); padding: 17px 18px; font-size:16px; font-weight:700; color:#fff; background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%); box-shadow: var(--shadow-btn); cursor:pointer; }
-  footer{ text-align:center; margin-top:20px; font-size:12px; color: var(--text-muted); }
+  body { margin:0; background: var(--bg); font-family: 'Inter', sans-serif; display:flex; justify-content:center; }
+  .page { width:100%; max-width: 440px; padding: 24px 20px; display:flex; flex-direction:column; gap: 16px; }
+  
+  .header { display:flex; justify-content:space-between; align-items:center; }
+  .header h2 { color: var(--navy); margin:0; font-size: 24px; font-weight: 800; }
+  .btn-history { background:none; border:none; color: var(--blue); font-weight:700; cursor:pointer; font-size: 14px; font-family: inherit; display: flex; align-items: center; gap: 4px; }
+  
+  .card { background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); border: 1px solid var(--border); padding: 20px; display:flex; flex-direction:column; gap: 16px; }
+  .field { display:flex; flex-direction:column; gap:6px; }
+  .field label { font-size: 13px; font-weight: 700; color: var(--navy); }
+  input, select { width:100%; font-size:16px; font-weight:500; background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 14px 16px; outline:none; color: var(--text); }
+  .row { display:flex; gap: 12px; }
+  .row .field { flex:1; }
+  .total-box { background: var(--navy); color: white; border-radius: var(--radius-md); padding: 20px; text-align:center; }
+  .total-box span { display:block; font-size: 12px; opacity: 0.8; font-weight: 600; margin-bottom: 4px; letter-spacing: 0.05em; }
+  .total-box h3 { margin:0; font-size: 28px; font-weight: 800; }
+  .btn-primary { width:100%; border:none; border-radius: var(--radius-md); padding: 18px; font-size:16px; font-weight:700; color:#fff; background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%); box-shadow: var(--shadow-btn); cursor:pointer; }
 </style>
 </head>
 <body>
 <div class="page">
-  <div class="brand">
-    <div class="brand-mark">
-      <svg viewBox="0 0 32 32" fill="none"><rect x="4" y="10" width="24" height="14" rx="3" stroke="#7FB2E8" stroke-width="2"/><path d="M9 10v4M14 10v4M19 10v4M24 10v4" stroke="#7FB2E8" stroke-width="2"/><path d="M11 19.5l3 3 7-7" stroke="#3DDC84" stroke-width="2.4"/></svg>
-    </div>
-    <h1 class="brand-name">OrçaZap</h1>
-    <p class="brand-tag">Cadastre-se grátis para criar orçamentos no celular.</p>
+  <div class="header">
+    <h2>OrçaZap 📏</h2>
+    <button class="btn-history" onclick="window.location.href='historico.html'">Histórico 📂</button>
   </div>
+  
   <div class="card">
-    <form id="cadastro-form">
-      <div class="field">
-        <label for="nome_negocio">Nome do seu Negócio</label>
-        <input type="text" id="nome_negocio" placeholder="Ex: Marmoraria Silva" required>
-      </div>
-      <div class="field">
-        <label for="profissao">Sua Profissão</label>
-        <select id="profissao" required>
-          <option value="Marmorista">Marmorista</option>
-          <option value="Serralheiro">Serralheiro</option>
-          <option value="Eletricista">Eletricista</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="email">Seu E-mail</label>
-        <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
-      </div>
-      <div class="field">
-        <label for="password">Senha (mínimo 6 dígitos)</label>
-        <input type="password" id="password" placeholder="Digite sua senha" required minlength="6">
-      </div>
-      <button type="submit" class="btn-primary" id="btn-submit">Criar Minha Conta Grátis</button>
-    </form>
+    <div class="field"><label for="cliente">Nome do Cliente</label><input type="text" id="cliente" placeholder="Ex: Maria Souza"></div>
+    <div class="field">
+      <label for="material">Material</label>
+      <select id="material" onchange="calcularTudo()">
+        <option value="900">Mármore São Gabriel - R$ 900/m²</option>
+        <option value="1200">Mármore Carrara - R$ 1.200/m²</option>
+      </select>
+    </div>
+    <div class="row">
+      <div class="field"><label for="largura">Largura (m)</label><input type="number" id="largura" value="0.60" step="0.01" oninput="calcularTudo()"></div>
+      <div class="field"><label for="comprimento">Comprimento (m)</label><input type="number" id="comprimento" value="1.50" step="0.01" oninput="calcularTudo()"></div>
+    </div>
+    <div class="field"><label for="mao_obra">Instalação (R$)</label><input type="number" id="mao_obra" value="300" oninput="calcularTudo()"></div>
+    <div class="total-box"><span>VALOR TOTAL PREVISTO</span><h3 id="valor-total">R$ 1.110,00</h3></div>
+    <button class="btn-primary" onclick="compartilharWhatsApp()">Gerar e Enviar por WhatsApp</button>
   </div>
-  <footer>OrçaZap &copy; 2026</footer>
 </div>
-<script src="app.js"></script>
+
+<script>
+  const SUPABASE_URL = "https://supabase.co";
+  const SUPABASE_KEY = "sb_publishable_bUCzdW_A7zsMW5Ubh3zEJw_1cZuJ5bG";
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  function calcularTudo() {
+    const preco = parseFloat(document.getElementById('material').value);
+    const larg = parseFloat(document.getElementById('largura').value) || 0;
+    const comp = parseFloat(document.getElementById('comprimento').value) || 0;
+    const mao = parseFloat(document.getElementById('mao_obra').value) || 0;
+    const total = (larg * comp * preco) + mao;
+    document.getElementById('valor-total').innerText = 'R$ ' + total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  }
+
+  async function compartilharWhatsApp() {
+    const cliente = document.getElementById('cliente').value.trim() || 'Cliente';
+    const totalText = document.getElementById('valor-total').innerText;
+    
+    const select = document.getElementById('material');
+    const textoMaterial = select.options[select.selectedIndex].text.split(' - ')[0];
+    const preco = parseFloat(select.value);
+    
+    const larg = parseFloat(document.getElementById('largura').value) || 0;
+    const comp = parseFloat(document.getElementById('comprimento').value) || 0;
+    const mao = parseFloat(document.getElementById('mao_obra').value) || 0;
+    const valorTotalNumerico = (larg * comp * preco) + mao;
+
+    try {
+      await supabaseClient.from('orcamentos').insert([
+        { cliente: cliente, material: textoMaterial, total: valorTotalNumerico }
+      ]);
+      console.log("Orçamento arquivado com sucesso!");
+    } catch (err) {
+      console.error("Erro ao salvar:", err);
+    }
+
+    const textoMensagem = `Olá *${cliente}*, segue o orçamento solicitado:\n\n` +
+                          `🔹 *Material:* ${textoMaterial}\n` +
+                          `📐 *Medidas:* ${larg.toFixed(2)}m × ${comp.toFixed(2)}m\n` +
+                          `💰 *Valor Total:* ${totalText}\n\n` +
+                          `_Gerado via OrçaZap!_`;
+                          
+    window.location.href = "https://whatsapp.com" + encodeURIComponent(textoMensagem);
+  }
+</script>
 </body>
 </html>
